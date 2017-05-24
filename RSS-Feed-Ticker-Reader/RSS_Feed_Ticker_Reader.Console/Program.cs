@@ -29,8 +29,24 @@ namespace RSS_Feed_Ticker_Reader.Console
         }
         static void ReadRSS()
         {
+            System.Console.WriteLine("Write RSS RDF or Atom");
+            FeedTypes.FeedType fty;
+            switch (System.Console.ReadLine().ToUpper())
+            {
+                case "ATOM":
+                    fty = FeedTypes.FeedType.Atom;
+                    break;
+                case "RDF":
+                    fty = FeedTypes.FeedType.RDF;
+                    break;
+                default:
+                case "RSS":
+                    fty = FeedTypes.FeedType.RSS;
+                    break;
+            }
+
             System.Console.WriteLine("Write feed URL");
-            FeedData.RSSHost host = FeedData.FeedConverter.Parse(System.Console.ReadLine(), FeedTypes.FeedType.RSS);
+            FeedData.RSSHost host = FeedData.FeedConverter.Parse(System.Console.ReadLine(), fty);
             System.Console.Clear();
 
             System.Console.WriteLine(writeFeeds(host));

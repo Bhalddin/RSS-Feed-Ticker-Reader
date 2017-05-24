@@ -1,0 +1,18 @@
+﻿Add RDF and Atom support.
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   RSS-Feed-Ticker-Reader/RSS_Feed_Ticker_Reader.Console/Program.cs
+#	modified:   RSS-Feed-Ticker-Reader/RSS_Feed_Ticker_Reader/FeedData/FeedConverter.cs
+#
+# Changes not staged for commit:
+#	modified:   RSS-Feed-Ticker-Reader/RSS_Feed_Ticker_Reader.Console/Program.cs
+#
+# Untracked files:
+#	4krjg4tj.j24.txt
+#	l2a01b2s.x2c.txt
+#
+

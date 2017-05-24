@@ -27,9 +27,14 @@ namespace RSS_Feed_Ticker_Reader.FeedData
                     break;
                 case FeedTypes.FeedType.RDF:
                     host.Feeds = ParseRdf(doc);
+                    host.HostName = doc.Root.Descendants()
+                           .First(i => i.Name.LocalName == "Feed" || i.Name.LocalName == "channel")
+                           .Elements().
+                           Where(i => i.Name.LocalName == "title").FirstOrDefault().Value;
                     break;
                 case FeedTypes.FeedType.Atom:
                     host.Feeds = ParseAtom(doc);
+                    host.HostName = doc.Root.Elements().Where(i => i.Name.LocalName == "title").FirstOrDefault().Value;
                     break;
                 default:
                     throw new NotSupportedException(string.Format("{0} is not supported", feedType.ToString()));
@@ -87,13 +92,15 @@ namespace RSS_Feed_Ticker_Reader.FeedData
         {
             try
             {
-                IEnumerable<Feed> entries = from Feed in doc.Root.Descendants().Where(i => i.Name.LocalName == "Feed")
+                IEnumerable<Feed> entries = from Feed in doc.Root.Descendants().Where(i => (i.Name.LocalName != "Feed"
+                                            && i.Name.LocalName != "channel")
+                                            && i.HasElements)
                               select new Feed
                               {
                                   FeedType = FeedTypes.FeedType.RDF,
                                   Content = Feed.Elements().First(i => i.Name.LocalName == "description").Value,
                                   Link = Feed.Elements().First(i => i.Name.LocalName == "link").Value,
-                                  PublishDate = DateTime.Parse(Feed.Elements().First(i => i.Name.LocalName == "date").Value),
+                                  PublishDate = Feed.Elements().Any(i => i.Name.LocalName == "date")?DateTime.Parse(Feed.Elements().First(i => i.Name.LocalName == "date").Value):DateTime.Now,
                                   Title = Feed.Elements().First(i => i.Name.LocalName == "title").Value
                               };
                 return entries.ToList();
