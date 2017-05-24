@@ -16,12 +16,17 @@ namespace RSS_Feed_Ticker_Reader.Database
         {
             get
             {
-                if (database == null)
-                {
-                    database = new FeedDatabase(DependencyService.Get<IFileHelper>().GetLocalFilePath("TodoSQLite.db3"));
-                }
-                return database;
+                return DatabaseGet(DependencyService.Get<IFileHelper>().GetLocalFilePath("TodoSQLite.db3"));
             }
+        }
+        public static FeedDatabase DatabaseGet(string path)
+        {
+            if (database == null)
+            {
+                new Page1();
+                database = new FeedDatabase(path);
+            }
+            return database;
         }
         private FeedDatabase(string dbPath)
         {
@@ -43,5 +48,6 @@ namespace RSS_Feed_Ticker_Reader.Database
                 return connection.InsertAsync(item);
             }
         }
+
     }
 }
