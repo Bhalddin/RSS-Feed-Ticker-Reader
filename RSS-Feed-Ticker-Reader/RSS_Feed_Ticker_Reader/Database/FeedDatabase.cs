@@ -23,7 +23,6 @@ namespace RSS_Feed_Ticker_Reader.Database
         {
             if (database == null)
             {
-                new Page1();
                 database = new FeedDatabase(path);
             }
             return database;
