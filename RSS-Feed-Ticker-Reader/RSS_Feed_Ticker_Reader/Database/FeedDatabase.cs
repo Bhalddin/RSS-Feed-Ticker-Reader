@@ -54,7 +54,7 @@ namespace RSS_Feed_Ticker_Reader.Database
         public async Task<int> SaveHostAsync(FeedData.RSSHost item)
         {
             int result = -1;
-            if (item.ID != null)
+            if (item.ID != -1)
             {
                 result =  await connection.UpdateAsync(item);
             }
@@ -72,7 +72,7 @@ namespace RSS_Feed_Ticker_Reader.Database
         }
         public Task<int> SaveFeedAsync(FeedData.Feed item)
         {
-            if (item.ID != null)
+            if (item.ID != -1)
             {
                 return connection.UpdateAsync(item);
             }
