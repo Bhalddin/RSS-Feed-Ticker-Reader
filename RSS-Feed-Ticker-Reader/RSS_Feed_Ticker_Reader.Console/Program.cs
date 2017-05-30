@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,12 +53,12 @@ namespace RSS_Feed_Ticker_Reader.Console
             System.Console.WriteLine(writeFeeds(host));
             System.Console.Write("Save To DB?");
             if(System.Console.ReadKey().Key == ConsoleKey.Y)
-                Database.FeedDatabase.Database.SaveItemAsync(host);
+                Database.FeedDatabase.DatabaseGet(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "TodoSQLite.db3")).SaveItemAsync(host);
         }
         static void ReadDB()
         {
             int id = 0;
-            Task<List<FeedData.RSSHost>> hosts = Database.FeedDatabase.Database.GetRSSAsync();
+            Task<List<FeedData.RSSHost>> hosts = Database.FeedDatabase.DatabaseGet(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "TodoSQLite.db3")).GetRSSAsync();
             hosts.Wait();
             do
             {

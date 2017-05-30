@@ -30,8 +30,14 @@ namespace RSS_Feed_Ticker_Reader.Database
         }
         private FeedDatabase(string dbPath)
         {
-            connection = new SQLiteAsyncConnection(dbPath);
-            connection.CreateTableAsync<FeedData.RSSHost>().Wait();
+            try
+            {
+                connection = new SQLiteAsyncConnection(dbPath);
+                connection.CreateTableAsync<FeedData.RSSHost>().Wait();
+            }catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
         public Task<List<FeedData.RSSHost>> GetRSSAsync()
         {

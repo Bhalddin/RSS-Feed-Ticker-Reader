@@ -11,6 +11,7 @@ namespace RSS_Feed_Ticker_Reader.FeedData
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+        [Ignore]
         public List<Feed> Feeds { get; set; }
         public String HostName { get; set; }
         public String FeedUrl { get; set; }
