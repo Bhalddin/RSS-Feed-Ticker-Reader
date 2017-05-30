@@ -56,17 +56,17 @@ namespace RSS_Feed_Ticker_Reader.Database
             int result = -1;
             if (item.ID != -1)
             {
-                result =  await connection.UpdateAsync(item);
+                connection.UpdateAsync(item).Wait();
             }
             else
             {
-                result = await connection.InsertAsync(item);
+                connection.InsertAsync(item).Wait();
             }
             FeedData.RSSHost host = (await GetRSSAsync()).Find(h => h.FeedUrl.Equals(item.FeedUrl));
             foreach(FeedData.Feed feed in item.Feeds)
             {
                 feed.ParentID = host.ID;
-                await SaveFeedAsync(feed);
+                result = await SaveFeedAsync(feed);
             }
             return result;
         }
