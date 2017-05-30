@@ -33,18 +33,46 @@ namespace RSS_Feed_Ticker_Reader.Database
             {
                 connection = new SQLiteAsyncConnection(dbPath);
                 connection.CreateTableAsync<FeedData.RSSHost>().Wait();
-            }catch (Exception ex)
+                connection.CreateTableAsync<FeedData.Feed>().Wait();
+            }
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
             }
         }
-        public Task<List<FeedData.RSSHost>> GetRSSAsync()
+        public async Task<List<FeedData.RSSHost>> GetRSSAsync()
         {
-            return connection.Table<FeedData.RSSHost>().ToListAsync();
+            List<FeedData.RSSHost> resultH = await connection.Table<FeedData.RSSHost>().ToListAsync();
+            List<FeedData.Feed> resultF = await connection.Table<FeedData.Feed>().ToListAsync();
+            foreach(FeedData.RSSHost host in resultH)
+            {
+                host.Feeds.AddRange( resultF.FindAll(res => res.ParentID == host.ID) );
+            }
+            return resultH;
+
         }
-        public Task<int> SaveItemAsync(FeedData.RSSHost item)
+        public async Task<int> SaveHostAsync(FeedData.RSSHost item)
         {
-            if (item.ID != 0)
+            int result = -1;
+            if (item.ID != null)
+            {
+                result =  await connection.UpdateAsync(item);
+            }
+            else
+            {
+                result = await connection.InsertAsync(item);
+            }
+            FeedData.RSSHost host = (await GetRSSAsync()).Find(h => h.FeedUrl.Equals(item.FeedUrl));
+            foreach(FeedData.Feed feed in item.Feeds)
+            {
+                feed.ParentID = host.ID;
+                await SaveFeedAsync(feed);
+            }
+            return result;
+        }
+        public Task<int> SaveFeedAsync(FeedData.Feed item)
+        {
+            if (item.ID != null)
             {
                 return connection.UpdateAsync(item);
             }

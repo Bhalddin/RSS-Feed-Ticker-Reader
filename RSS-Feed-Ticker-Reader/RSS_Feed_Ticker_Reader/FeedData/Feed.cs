@@ -7,6 +7,7 @@ namespace RSS_Feed_Ticker_Reader.FeedData
     {
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
+        public int ParentID { get; set; }
         public string Link { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

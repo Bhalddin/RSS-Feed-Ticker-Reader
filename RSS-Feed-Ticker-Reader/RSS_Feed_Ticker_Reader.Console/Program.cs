@@ -53,7 +53,7 @@ namespace RSS_Feed_Ticker_Reader.Console
             System.Console.WriteLine(writeFeeds(host));
             System.Console.Write("Save To DB?");
             if(System.Console.ReadKey().Key == ConsoleKey.Y)
-                Database.FeedDatabase.DatabaseGet(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "TodoSQLite.db3")).SaveItemAsync(host);
+                Database.FeedDatabase.DatabaseGet(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "TodoSQLite.db3")).SaveHostAsync(host);
         }
         static void ReadDB()
         {
