@@ -1,2 +1,22 @@
-before_build:
-  - nuget restore
+version: 1.0.{build}
+environment:
+  GITHUB_API_TOKEN:
+    secure: OSE+7lWAzOpa6sqcZROxxqkcP/PddcN5fkdaMQAqCSZ+sxTVwtjAFIB2kAfMVzWD
+build:
+  publish_wap: true
+  verbosity: detailed
+artifacts:
+- path: C:\projects\rss-feed-ticker-reader\RSS-Feed-Ticker-Reader\RSS_Feed_Ticker_Reader.Console\bin\Debug\*
+  name: Console
+- path: console.zip
+deploy:
+- provider: GitHub
+  tag: Commit Build
+  auth_token:
+    secure: OSE+7lWAzOpa6sqcZROxxqkcP/PddcN5fkdaMQAqCSZ+sxTVwtjAFIB2kAfMVzWD
+  artifact: /.*\.exe/, /.*\.whl/ ,/.*\.dll, /.*\.zip
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
